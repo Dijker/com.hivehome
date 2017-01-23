@@ -1,0 +1,15 @@
+{
+  "name": "com.hivehome",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {
+    "homey-devicedriver": "file:../../node-homey-devicedriver"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

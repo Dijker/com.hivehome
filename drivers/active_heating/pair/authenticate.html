@@ -1,0 +1,59 @@
+<p data-i18n="pair.auth.smile.find_id"></p>
+
+<br/>
+
+<form id="form" name="form" onsubmit="return getForm()" action="javascript:void(0);" method="post" style="text-align:center;">
+	<div class="form-group">
+		<input type="text" name="username" id="username" placeholder=""/>
+		<input type="text" name="password" id="password" placeholder=""/>
+		<input type="submit" id="submit" value="Login"/>
+	</div>
+</form>
+
+
+<script type="text/javascript">
+	Homey.setTitle(__('pair.authenticate.title'));
+
+	document.getElementById("username").setAttribute("placeholder", __("pair.authenticate.username"));
+	document.getElementById("password").setAttribute("placeholder", __("pair.authenticate.password"));
+
+	function getForm() {
+
+		// Mark as authenticating
+		document.getElementById('submit').disabled = 'disabled';
+		document.getElementById('submit').value = __('pair.authenticate.checking');
+
+		Homey.emit('authenticate', {
+				username: document.forms["form"]["username"].value,
+				password: document.forms["form"]["password"].value
+			},
+			function (err, result) {
+				if (err) {
+					console.log('authentication failed');
+					document.getElementById('submit').disabled = false;
+					document.getElementById('submit').value = __('pair.authenticate.try_again');
+				}
+				else {
+					console.log('authentication succeeded');
+					document.getElementById('submit').value = __('pair.authenticate.correct');
+					if (Array.isArray(result)) {
+						result.forEach(function (device) {
+							Homey.addDevice(device, function (err, result) {
+								if (err) console.error(err);
+								else console.log(result);
+							});
+						});
+						setTimeout(function () {
+							Homey.done();
+						}, 1000);
+					} else {
+						Homey.addDevice(result, function (err, result) {
+							if (err) console.error(err);
+							else console.log(result);
+							Homey.done();
+						});
+					}
+				}
+			});
+	}
+</script>

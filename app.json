@@ -1,0 +1,110 @@
+{
+	"id": "com.hivehome",
+	"name": {
+		"en": "Hive"
+	},
+	"version": "0.0.1",
+	"compatibility": ">=1.0.0",
+	"author": {
+		"name": "Athom B.V.",
+		"email": "apps@athom.com"
+	},
+	"capabilities": {
+		"hot_water": {
+			"type": "enum",
+			"title": {
+				"en": "Hot water",
+				"nl": "Heet water"
+			},
+			"getable": true,
+			"setable": true,
+			"values": [
+				{
+					"id": "schedule",
+					"title": {
+						"en": "Schedule",
+						"nl": "Programma"
+					}
+				},
+				{
+					"id": "manual",
+					"title": {
+						"en": "Manual",
+						"nl": "Handmatig"
+					}
+				},
+				{
+					"id": "boost",
+					"title": {
+						"en": "Boost",
+						"nl": "Boost"
+					}
+				}
+			]
+		}
+	},
+	"drivers": [
+		{
+			"id": "active_heating",
+			"name": {
+				"en": "Active Heating",
+				"nl": "Active Heating"
+			},
+			"images": {
+				"large": "drivers/active_heating/assets/images/large.jpg",
+				"small": "drivers/active_heating/assets/images/small.jpg"
+			},
+			"class": "thermostat",
+			"capabilities": [
+				"target_temperature",
+				"measure_temperature",
+				"alarm_battery",
+				"hot_water"
+			],
+			"capabilitiesOptions": {
+				"target_temperature": {
+					"min": 5,
+					"max": 32,
+					"step": 0.5
+				}
+			},
+			"mobile": {
+				"components": [
+					{
+						"capabilities": [
+						],
+						"id": "icon"
+					},
+					{
+						"capabilities": [
+							"measure_temperature",
+							"alarm_battery"
+						],
+						"id": "sensor"
+					},
+					{
+						"capabilities": [
+							"hot_water"
+						],
+						"id": "picker"
+					},
+					{
+						"capabilities": [
+							"target_temperature"
+						],
+						"id": "thermostat"
+					}
+				]
+			},
+			"pair": [
+				{
+					"id": "authenticate"
+				},
+				{
+					"id": "add_active_heating",
+					"template": "add_devices"
+				}
+			]
+		}
+	]
+}
