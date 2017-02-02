@@ -14,7 +14,7 @@
 			"type": "enum",
 			"title": {
 				"en": "Hot water",
-				"nl": "Heet water"
+				"nl": "Warm water"
 			},
 			"getable": true,
 			"setable": true,
@@ -29,8 +29,8 @@
 				{
 					"id": "manual",
 					"title": {
-						"en": "Manual",
-						"nl": "Handmatig"
+						"en": "On",
+						"nl": "Aan"
 					}
 				},
 				{
@@ -38,6 +38,38 @@
 					"title": {
 						"en": "Boost",
 						"nl": "Boost"
+					}
+				}
+			]
+		},
+		"custom_thermostat_mode": {
+			"type": "enum",
+			"title": {
+				"en": "Thermostat mode",
+				"nl": "Thermostaat modus"
+			},
+			"getable": true,
+			"setable": true,
+			"values": [
+				{
+					"id": "off",
+					"title": {
+						"en": "Off",
+						"nl": "Uit"
+					}
+				},
+				{
+					"id": "schedule",
+					"title": {
+						"en": "Schedule",
+						"nl": "Programma"
+					}
+				},
+				{
+					"id": "manual",
+					"title": {
+						"en": "Manual",
+						"nl": "Handmatig"
 					}
 				}
 			]
@@ -59,7 +91,8 @@
 				"target_temperature",
 				"measure_temperature",
 				"alarm_battery",
-				"hot_water"
+				"hot_water",
+				"custom_thermostat_mode"
 			],
 			"capabilitiesOptions": {
 				"target_temperature": {
@@ -106,5 +139,202 @@
 				}
 			]
 		}
-	]
+	],
+	"flow": {
+		"triggers": [
+			{
+				"id": "custom_thermostat_mode_changed",
+				"title": {
+					"en": "Thermostat mode changed",
+					"nl": "Thermostat modus is veranderd"
+				},
+				"tokens": [
+					{
+						"name": "mode",
+						"type": "string",
+						"title": {
+							"en": "mode"
+						},
+						"example": "off"
+					}
+				],
+				"args": [
+					{
+						"name": "device",
+						"type": "device",
+						"filter": "driver_id=active_heating"
+					},
+					{
+						"name": "mode",
+						"type": "dropdown",
+						"values": [
+							{
+								"id": "off",
+								"label": {
+									"en": "Off",
+									"nl": "Uit"
+								}
+							},
+							{
+								"id": "schedule",
+								"label": {
+									"en": "Schedule",
+									"nl": "Programma"
+								}
+							},
+							{
+								"id": "manual",
+								"label": {
+									"en": "Manual",
+									"nl": "Handmatig"
+								}
+							}
+						]
+					}
+				]
+			},
+			{
+				"id": "hot_water_changed",
+				"title": {
+					"en": "Hot water mode changed",
+					"nl": "Warm water modus is veranderd"
+				},
+				"tokens": [
+					{
+						"name": "mode",
+						"type": "string",
+						"title": {
+							"en": "mode"
+						},
+						"example": "off"
+					}
+				],
+				"args": [
+					{
+						"name": "device",
+						"type": "device",
+						"filter": "driver_id=active_heating"
+					},
+					{
+						"name": "mode",
+						"type": "dropdown",
+						"values": [
+							{
+								"id": "off",
+								"label": {
+									"en": "Off",
+									"nl": "Uit"
+								}
+							},
+							{
+								"id": "schedule",
+								"label": {
+									"en": "Schedule",
+									"nl": "Programma"
+								}
+							},
+							{
+								"id": "manual",
+								"label": {
+									"en": "On",
+									"nl": "Aan"
+								}
+							}
+						]
+					}
+				]
+			}
+		],
+		"actions": [
+			{
+				"id": "hot_water",
+				"title": {
+					"en": "Set hot water mode",
+					"nl": "Stel warm water modus in"
+				},
+				"args": [
+					{
+						"name": "device",
+						"type": "device",
+						"filter": "driver_id=active_heating"
+					},
+					{
+						"name": "mode",
+						"type": "dropdown",
+						"values": [
+							{
+								"id": "schedule",
+								"label": {
+									"en": "Schedule",
+									"nl": "Programma"
+								}
+							},
+							{
+								"id": "on",
+								"label": {
+									"en": "On",
+									"nl": "Aan"
+								}
+							},
+							{
+								"id": "boost",
+								"label": {
+									"en": "Boost",
+									"nl": "Boost"
+								}
+							}
+						]
+					}
+				]
+			},
+			{
+				"id": "climate_control",
+				"title": {
+					"en": "Set climate control mode",
+					"nl": "Stel thermostaat modus in"
+				},
+				"args": [
+					{
+						"name": "device",
+						"type": "device",
+						"filter": "driver_id=active_heating"
+					},
+					{
+						"name": "mode",
+						"type": "dropdown",
+						"values": [
+							{
+								"id": "off",
+								"label": {
+									"en": "Off",
+									"nl": "Uit"
+								}
+							},
+							{
+								"id": "schedule",
+								"label": {
+									"en": "Schedule",
+									"nl": "Programma"
+								}
+							},
+							{
+								"id": "manual",
+								"label": {
+									"en": "Manual",
+									"nl": "Handmatig"
+								}
+							},
+							{
+								"id": "boost",
+								"label": {
+									"en": "Boost",
+									"nl": "Boost"
+								}
+							}
+						]
+					}
+				]
+			}
+		]
+	}
 }

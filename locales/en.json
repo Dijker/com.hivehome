@@ -1,1 +1,13 @@
-{}
+{
+	"pair": {
+		"authenticate": {
+			"title": "Login with your Hive credentials",
+			"intro": "Fill in your Hive credentials below, to connect with your devices.",
+			"username": "Username",
+			"password": "Password",
+			"checking": "Checking...",
+			"try_again": "Please try again",
+			"correct": "Correct"
+		}
+	}
+}

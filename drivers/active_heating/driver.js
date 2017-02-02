@@ -5,9 +5,11 @@ const path = require('path');
 
 const Hive = require('./../../lib/HiveAPI');
 
-// TODO flow cards for hot water and temperature boost
-// TODO text in pairing wizzard
-// TODO sentry logging
+// TODO target temp changed not working
+// TODO hot water changed not working
+// TODO thermostat mode changed not working
+// TODO set hot water mode is not working
+// TODO locales nl
 
 module.exports = new DeviceDriver(path.basename(__dirname), {
 	debug: true,
@@ -18,6 +20,11 @@ module.exports = new DeviceDriver(path.basename(__dirname), {
 			debug: true,
 			username: username.toString(),
 			password: password.toString()
+		});
+		device.api.on('custom_thermostat_mode_changed', value => {
+			Homey.manager('flow').triggerDevice('custom_thermostat_mode_changed', { "mode": value }, {}, device.data, err => {
+				if (err) console.error('failed to trigger device custom_thermostat_mode_changed', value);
+			});
 		});
 		return callback(null, device);
 	},
@@ -55,11 +62,25 @@ module.exports = new DeviceDriver(path.basename(__dirname), {
 			pollInterval: 15000,
 			get: (device, callback) => {
 				device.api.getHotWaterControllerState((err, result) => {
+					if(result === 'off') result = null;
 					return callback(err, result);
 				});
 			},
 			set: (device, state, callback) => {
-				device.api.setHotWaterControllerState(state.toUpperCase(), err => {
+				device.api.setHotWaterControllerState(state, err => {
+					return callback(err, state);
+				});
+			}
+		},
+		custom_thermostat_mode: {
+			pollInterval: 15000,
+			get: (device, callback) => {
+				device.api.getClimateControllerState((err, result) => {
+					return callback(err, result.control);
+				});
+			},
+			set: (device, state, callback) => {
+				device.api.setClimateControllerState(state, err => {
 					return callback(err, state);
 				});
 			}
@@ -99,4 +120,49 @@ module.exports = new DeviceDriver(path.basename(__dirname), {
 				});
 		});
 	}
+});
+
+Homey.manager('flow').on('action.hot_water', function (callback, args) {
+	const device = module.exports.getDevice(args.device);
+	if (typeof device === 'undefined' || device instanceof Error) return callback('invalid_device');
+	device.api.setHotWaterControllerState(args.mode, err => {
+		return callback(err, args.mode);
+	});
+});
+
+Homey.manager('flow').on('action.climate_control', function (callback, args) {
+	const device = module.exports.getDevice(args.device);
+	if (typeof device === 'undefined' || device instanceof Error) return callback('invalid_device');
+	device.api.setClimateControllerState(args.mode, err => {
+		return callback(err, args.mode);
+	});
+});
+
+Homey.manager('flow').on('trigger.custom_thermostat_mode_changed', function (callback, args, state) {
+	console.log('trigger.custom_thermostat_mode_changed', 'args', args, 'state',state);
+	if (typeof args.mode === 'undefined' || typeof state.mode === 'undefined') return callback('invalid_parameters');
+	if (args.mode === state.mode) return callback(null, true);
+	return callback(null, false);
+});
+
+module.exports.on('custom_thermostat_mode_changed', (device, capability, value) => {
+	console.log(capability, value)
+	Homey.manager('flow').triggerDevice('custom_thermostat_mode_changed', { mode: value }, { mode: value }, device.data, err => {
+		if (err) console.error('custom_thermostat_mode_changed error -> ', err);
+	});
+});
+
+Homey.manager('flow').on('trigger.hot_water_changed', function (callback, args, state) {
+	console.log('trigger.hot_water_changed', 'args', args, 'state',state);
+	if (typeof args.mode === 'undefined' || typeof state.mode === 'undefined') return callback('invalid_parameters');
+	if (args.mode === state.mode) return callback(null, true);
+	return callback(null, false);
+});
+
+module.exports.on('hot_water_changed', (device, capability, value) => {
+	console.log(capability, value)
+	if (value === null) value = 'off';
+	Homey.manager('flow').triggerDevice('hot_water_changed', { mode: value }, { mode: value }, device.data, err => {
+		if (err) console.error('hot_water_changed error -> ', err);
+	});
 });
