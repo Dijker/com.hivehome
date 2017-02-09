@@ -1,0 +1,13 @@
+{
+	"pair": {
+		"authenticate": {
+			"title": "Login met je Hive inloggegevens",
+			"intro": "Vul hieronder je Hive inloggegevens in, om te verbinden met de Hive Active Heating thermostaat.",
+			"username": "Gebruikersnaam",
+			"password": "Wachtwoord",
+			"checking": "Controlere...",
+			"try_again": "Probeer het opnieuw",
+			"correct": "Correct"
+		}
+	}
+}

@@ -5,12 +5,6 @@ const path = require('path');
 
 const Hive = require('./../../lib/HiveAPI');
 
-// TODO target temp changed not working
-// TODO hot water changed not working
-// TODO thermostat mode changed not working
-// TODO set hot water mode is not working
-// TODO locales nl
-
 module.exports = new DeviceDriver(path.basename(__dirname), {
 	debug: true,
 	initDevice: (device, callback) => {
@@ -51,7 +45,7 @@ module.exports = new DeviceDriver(path.basename(__dirname), {
 			},
 		},
 		alarm_battery: {
-			pollInterval: 15000,
+			pollInterval: 60000,
 			get: (device, callback) => {
 				device.api.getBatteryState((err, result) => {
 					return callback(err, result !== 'OK');
@@ -62,7 +56,6 @@ module.exports = new DeviceDriver(path.basename(__dirname), {
 			pollInterval: 15000,
 			get: (device, callback) => {
 				device.api.getHotWaterControllerState((err, result) => {
-					if(result === 'off') result = null;
 					return callback(err, result);
 				});
 			},
@@ -139,30 +132,19 @@ Homey.manager('flow').on('action.climate_control', function (callback, args) {
 });
 
 Homey.manager('flow').on('trigger.custom_thermostat_mode_changed', function (callback, args, state) {
-	console.log('trigger.custom_thermostat_mode_changed', 'args', args, 'state',state);
-	if (typeof args.mode === 'undefined' || typeof state.mode === 'undefined') return callback('invalid_parameters');
-	if (args.mode === state.mode) return callback(null, true);
+	if (typeof args.mode === 'undefined' || typeof state.custom_thermostat_mode === 'undefined') return callback('invalid_parameters');
+	if (args.mode === state.custom_thermostat_mode) return callback(null, true);
 	return callback(null, false);
 });
 
-module.exports.on('custom_thermostat_mode_changed', (device, capability, value) => {
-	console.log(capability, value)
-	Homey.manager('flow').triggerDevice('custom_thermostat_mode_changed', { mode: value }, { mode: value }, device.data, err => {
+module.exports.on('custom_thermostat_mode_changed', (device, value) => {
+	Homey.manager('flow').triggerDevice('custom_thermostat_mode_changed', { custom_thermostat_mode: value }, { custom_thermostat_mode: value }, device.data, err => {
 		if (err) console.error('custom_thermostat_mode_changed error -> ', err);
 	});
 });
 
 Homey.manager('flow').on('trigger.hot_water_changed', function (callback, args, state) {
-	console.log('trigger.hot_water_changed', 'args', args, 'state',state);
-	if (typeof args.mode === 'undefined' || typeof state.mode === 'undefined') return callback('invalid_parameters');
-	if (args.mode === state.mode) return callback(null, true);
+	if (typeof args.mode === 'undefined' || typeof state.hot_water === 'undefined') return callback('invalid_parameters');
+	if (args.mode === state.hot_water) return callback(null, true);
 	return callback(null, false);
-});
-
-module.exports.on('hot_water_changed', (device, capability, value) => {
-	console.log(capability, value)
-	if (value === null) value = 'off';
-	Homey.manager('flow').triggerDevice('hot_water_changed', { mode: value }, { mode: value }, device.data, err => {
-		if (err) console.error('hot_water_changed error -> ', err);
-	});
 });

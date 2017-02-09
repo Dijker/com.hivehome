@@ -3,7 +3,7 @@
 	"name": {
 		"en": "Hive"
 	},
-	"version": "0.0.1",
+	"version": "1.0.0",
 	"compatibility": ">=1.0.0",
 	"author": {
 		"name": "Athom B.V.",
@@ -150,7 +150,7 @@
 				},
 				"tokens": [
 					{
-						"name": "mode",
+						"name": "custom_thermostat_mode",
 						"type": "string",
 						"title": {
 							"en": "mode"
@@ -201,7 +201,7 @@
 				},
 				"tokens": [
 					{
-						"name": "mode",
+						"name": "hot_water",
 						"type": "string",
 						"title": {
 							"en": "mode"
@@ -220,13 +220,6 @@
 						"type": "dropdown",
 						"values": [
 							{
-								"id": "off",
-								"label": {
-									"en": "Off",
-									"nl": "Uit"
-								}
-							},
-							{
 								"id": "schedule",
 								"label": {
 									"en": "Schedule",
@@ -238,6 +231,13 @@
 								"label": {
 									"en": "On",
 									"nl": "Aan"
+								}
+							},
+							{
+								"id": "boost",
+								"label": {
+									"en": "Boost",
+									"nl": "Boost"
 								}
 							}
 						]

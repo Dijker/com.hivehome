@@ -2,7 +2,7 @@
 	"pair": {
 		"authenticate": {
 			"title": "Login with your Hive credentials",
-			"intro": "Fill in your Hive credentials below, to connect with your devices.",
+			"intro": "Fill in your Hive credentials below, to connect with your Hive Active Heating thermostat.",
 			"username": "Username",
 			"password": "Password",
 			"checking": "Checking...",
