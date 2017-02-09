@@ -3,11 +3,20 @@
 	"name": {
 		"en": "Hive"
 	},
+	"description": {
+		"en": "This app lets you control your Hive Active Heating thermostat",
+		"nl": "Deze app laat jou je Hive Active Heating thermostaat bedienen"
+	},
 	"version": "1.0.0",
 	"compatibility": ">=1.0.0",
+	"category": "climate",
 	"author": {
 		"name": "Athom B.V.",
 		"email": "apps@athom.com"
+	},
+	"images": {
+		"large": "assets/images/large.jpg",
+		"small": "assets/images/small.jpg"
 	},
 	"capabilities": {
 		"hot_water": {
@@ -83,8 +92,8 @@
 				"nl": "Active Heating"
 			},
 			"images": {
-				"large": "drivers/active_heating/assets/images/large.jpg",
-				"small": "drivers/active_heating/assets/images/small.jpg"
+				"large": "drivers/active_heating/assets/images/large.png",
+				"small": "drivers/active_heating/assets/images/small.png"
 			},
 			"class": "thermostat",
 			"capabilities": [
