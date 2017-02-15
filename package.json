@@ -4,7 +4,10 @@
   "description": "",
   "main": "app.js",
   "dependencies": {
-    "homey-devicedriver": "file:../../node-homey-devicedriver"
+    "async": "^2.1.4",
+    "homey-devicedriver": "file:../../node-homey-devicedriver",
+    "homey-log": "^1.0.2",
+    "request": "^2.79.0"
   },
   "devDependencies": {},
   "scripts": {
