@@ -93,16 +93,24 @@ module.exports = new DeviceDriver(path.basename(__dirname), {
 
 						const devices = [];
 						for (let i in context.users[data.username].hubs) {
-							Homey.manager('settings').set(`${i}_username`, data.username);
-							Homey.manager('settings').set(`${i}_password`, data.password);
-							devices.push({
-								name: 'Hive Active Heating',
-								data: {
-									username: new Buffer(data.username).toString('base64'),
-									password: new Buffer(data.password).toString('base64'),
-									id: i
-								}
-							});
+
+							// Check if hot water and climate devices are present
+							if (context.users[data.username].hubs[i].hasOwnProperty('devices') &&
+								context.users[data.username].hubs[i].devices['climate'] &&
+								context.users[data.username].hubs[i].devices['hotwater']) {
+
+								Homey.manager('settings').set(`${i}_username`, data.username);
+								Homey.manager('settings').set(`${i}_password`, data.password);
+
+								devices.push({
+									name: 'Hive Active Heating',
+									data: {
+										username: new Buffer(data.username).toString('base64'),
+										password: new Buffer(data.password).toString('base64'),
+										id: i
+									}
+								});
+							}
 						}
 						return callback(null, devices);
 					}
