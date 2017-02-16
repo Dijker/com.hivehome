@@ -126,7 +126,8 @@
 					},
 					{
 						"capabilities": [
-							"hot_water"
+							"hot_water",
+							"custom_thermostat_mode"
 						],
 						"id": "picker"
 					},
@@ -171,7 +172,7 @@
 					{
 						"name": "device",
 						"type": "device",
-						"filter": "driver_id=active_heating"
+						"filter": "driver_id=active_heating&capabilities=custom_thermostat_mode"
 					},
 					{
 						"name": "mode",
@@ -222,7 +223,7 @@
 					{
 						"name": "device",
 						"type": "device",
-						"filter": "driver_id=active_heating"
+						"filter": "driver_id=active_heating&capabilities=hot_water"
 					},
 					{
 						"name": "mode",
@@ -265,7 +266,7 @@
 					{
 						"name": "device",
 						"type": "device",
-						"filter": "driver_id=active_heating"
+						"filter": "driver_id=active_heating&capabilities=hot_water"
 					},
 					{
 						"name": "mode",
@@ -306,7 +307,7 @@
 					{
 						"name": "device",
 						"type": "device",
-						"filter": "driver_id=active_heating"
+						"filter": "driver_id=active_heating&capabilities=custom_thermostat_mode"
 					},
 					{
 						"name": "mode",

@@ -26,9 +26,11 @@ module.exports = new DeviceDriver(path.basename(__dirname), {
 		target_temperature: {
 			pollInterval: 15000,
 			get: (device, callback) => {
-				device.api.getTargetTemperature((err, result) => {
-					return callback(err, result);
-				});
+				if (device.data.id.includes('heating_control')) {
+					device.api.getTargetTemperature((err, result) => {
+						return callback(err, result);
+					});
+				} else return callback('capability_not_active');
 			},
 			set: (device, temperature, callback) => {
 				device.api.setTargetTemperature(temperature, err => {
@@ -39,9 +41,11 @@ module.exports = new DeviceDriver(path.basename(__dirname), {
 		measure_temperature: {
 			pollInterval: 15000,
 			get: (device, callback) => {
-				device.api.getMeasureTemperature((err, result) => {
-					return callback(err, result);
-				});
+				if (device.data.id.includes('heating_control')) {
+					device.api.getMeasureTemperature((err, result) => {
+						return callback(err, result);
+					});
+				} else return callback('capability_not_active');
 			},
 		},
 		alarm_battery: {
@@ -55,9 +59,11 @@ module.exports = new DeviceDriver(path.basename(__dirname), {
 		hot_water: {
 			pollInterval: 15000,
 			get: (device, callback) => {
-				device.api.getHotWaterControllerState((err, result) => {
-					return callback(err, result);
-				});
+				if (device.data.id.includes('hot_water')) {
+					device.api.getHotWaterControllerState((err, result) => {
+						return callback(err, result);
+					});
+				} else return callback('capability_not_active');
 			},
 			set: (device, state, callback) => {
 				device.api.setHotWaterControllerState(state, err => {
@@ -68,9 +74,12 @@ module.exports = new DeviceDriver(path.basename(__dirname), {
 		custom_thermostat_mode: {
 			pollInterval: 15000,
 			get: (device, callback) => {
-				device.api.getClimateControllerState((err, result) => {
-					return callback(err, result.control);
-				});
+				if (device.data.id.includes('heating_control')) {
+
+					device.api.getClimateControllerState((err, result) => {
+						return callback(err, result.control);
+					});
+				} else return callback('capability_not_active');
 			},
 			set: (device, state, callback) => {
 				device.api.setClimateControllerState(state, err => {
@@ -95,21 +104,81 @@ module.exports = new DeviceDriver(path.basename(__dirname), {
 						for (let i in context.users[data.username].hubs) {
 
 							// Check if hot water and climate devices are present
-							if (context.users[data.username].hubs[i].hasOwnProperty('devices') &&
-								context.users[data.username].hubs[i].devices['climate'] &&
-								context.users[data.username].hubs[i].devices['hotwater']) {
+							if (context.users[data.username].hubs[i].hasOwnProperty('devices')) {
 
 								Homey.manager('settings').set(`${i}_username`, data.username);
 								Homey.manager('settings').set(`${i}_password`, data.password);
 
-								devices.push({
-									name: 'Hive Active Heating',
-									data: {
-										username: new Buffer(data.username).toString('base64'),
-										password: new Buffer(data.password).toString('base64'),
-										id: i
-									}
-								});
+								if (context.users[data.username].hubs[i].devices['climate']) {
+									devices.push({
+										name: 'Hive Heating Control',
+										capabilities: ["target_temperature", "measure_temperature", "alarm_battery", "custom_thermostat_mode"],
+										mobile: {
+											"components": [
+												{
+													"capabilities": [],
+													"id": "icon"
+												},
+												{
+													"capabilities": [
+														"measure_temperature",
+														"alarm_battery"
+													],
+													"id": "sensor"
+												},
+												{
+													"capabilities": [
+														"custom_thermostat_mode"
+													],
+													"id": "picker"
+												},
+												{
+													"capabilities": [
+														"target_temperature"
+													],
+													"id": "thermostat"
+												}
+											]
+										},
+										data: {
+											username: new Buffer(data.username).toString('base64'),
+											password: new Buffer(data.password).toString('base64'),
+											id: i + 'heating_control'
+										}
+									});
+								}
+
+								if (context.users[data.username].hubs[i].devices['hotwater']) {
+									devices.push({
+										name: 'Hive Hot Water Control',
+										capabilities: ["hot_water", "alarm_battery"],
+										mobile: {
+											"components": [
+												{
+													"capabilities": [],
+													"id": "icon"
+												},
+												{
+													"capabilities": [
+														"alarm_battery"
+													],
+													"id": "sensor"
+												},
+												{
+													"capabilities": [
+														"hot_water"
+													],
+													"id": "picker"
+												}
+											]
+										},
+										data: {
+											username: new Buffer(data.username).toString('base64'),
+											password: new Buffer(data.password).toString('base64'),
+											id: i + 'hot_water'
+										}
+									});
+								}
 							}
 						}
 						return callback(null, devices);
