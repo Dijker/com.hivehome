@@ -155,7 +155,7 @@
 				"id": "custom_thermostat_mode_changed",
 				"title": {
 					"en": "Thermostat mode changed",
-					"nl": "Thermostat modus is veranderd"
+					"nl": "Thermostaat modus is veranderd"
 				},
 				"tokens": [
 					{
