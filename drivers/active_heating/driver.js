@@ -113,6 +113,7 @@ module.exports = new DeviceDriver(path.basename(__dirname), {
 									devices.push({
 										name: 'Hive Heating Control',
 										capabilities: ["target_temperature", "measure_temperature", "alarm_battery", "custom_thermostat_mode"],
+										icon: '/app/com.hivehome/drivers/active_heating/assets/icon_climate.svg',
 										mobile: {
 											"components": [
 												{
@@ -152,6 +153,7 @@ module.exports = new DeviceDriver(path.basename(__dirname), {
 									devices.push({
 										name: 'Hive Hot Water Control',
 										capabilities: ["hot_water", "alarm_battery"],
+										icon: '/app/com.hivehome/drivers/active_heating/assets/icon_hot_water.svg',
 										mobile: {
 											"components": [
 												{
