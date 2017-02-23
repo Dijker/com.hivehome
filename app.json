@@ -157,6 +157,10 @@
           "en": "Thermostat mode changed",
           "nl": "Thermostaat modus is veranderd"
         },
+        "hint": {
+          "en": "Select a mode from the dropdown, when the thermostat mode changed to the selected mode the Flow will trigger.",
+          "nl": "Selecteer een modus, wanneer de thermostaat modus is veranderd naar de geselecteerde modus zal de Flow triggeren."
+        },
         "tokens": [
           {
             "name": "custom_thermostat_mode",
@@ -207,6 +211,10 @@
         "title": {
           "en": "Hot water mode changed",
           "nl": "Warm water modus is veranderd"
+        },
+        "hint": {
+          "en": "Select a mode from the dropdown, when the hot water mode changed to the selected mode the Flow will trigger.",
+          "nl": "Selecteer een modus, wanneer de warm water modus is veranderd naar de geselecteerde modus zal de Flow triggeren."
         },
         "tokens": [
           {
