@@ -77,7 +77,8 @@ module.exports = new DeviceDriver(path.basename(__dirname), {
 				if (device.data.id.includes('heating_control')) {
 
 					device.api.getClimateControllerState((err, result) => {
-						return callback(err, result.control);
+						if(err || !result) return callback(err || 'no_climate_controller_state_received');
+						return callback(null, result.control);
 					});
 				} else return callback('capability_not_active');
 			},
