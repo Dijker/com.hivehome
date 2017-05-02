@@ -28,7 +28,8 @@ module.exports = new DeviceDriver(path.basename(__dirname), {
 			get: (device, callback) => {
 				if (device.data.id.includes('heating_control')) {
 					device.api.getTargetTemperature((err, result) => {
-						return callback(err, result);
+						if (err || !result) return callback(err || 'no_target_temperature_state_received');
+						return callback(null, result);
 					});
 				} else return callback('capability_not_active');
 			},
@@ -43,7 +44,8 @@ module.exports = new DeviceDriver(path.basename(__dirname), {
 			get: (device, callback) => {
 				if (device.data.id.includes('heating_control')) {
 					device.api.getMeasureTemperature((err, result) => {
-						return callback(err, result);
+						if (err || !result) return callback(err || 'no_measure_temperature_state_received');
+						return callback(null, result);
 					});
 				} else return callback('capability_not_active');
 			},
@@ -61,7 +63,8 @@ module.exports = new DeviceDriver(path.basename(__dirname), {
 			get: (device, callback) => {
 				if (device.data.id.includes('hot_water')) {
 					device.api.getHotWaterControllerState((err, result) => {
-						return callback(err, result);
+						if (err || !result) return callback(err || 'no_hot_water_controller_state_received');
+						return callback(null, result);
 					});
 				} else return callback('capability_not_active');
 			},
@@ -77,7 +80,7 @@ module.exports = new DeviceDriver(path.basename(__dirname), {
 				if (device.data.id.includes('heating_control')) {
 
 					device.api.getClimateControllerState((err, result) => {
-						if(err || !result) return callback(err || 'no_climate_controller_state_received');
+						if (err || !result) return callback(err || 'no_climate_controller_state_received');
 						return callback(null, result.control);
 					});
 				} else return callback('capability_not_active');
