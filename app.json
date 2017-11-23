@@ -7,7 +7,7 @@
     "en": "This app lets you control your Hive Active Heating thermostat",
     "nl": "Deze app laat jou je Hive Active Heating thermostaat bedienen"
   },
-  "version": "1.0.2",
+  "version": "1.0.3",
   "compatibility": ">=1.0.0",
   "category": "climate",
   "author": {
@@ -168,7 +168,9 @@
             "title": {
               "en": "mode"
             },
-            "example": "off"
+            "example": {
+              "en": "off"
+            }
           }
         ],
         "args": [
@@ -223,7 +225,9 @@
             "title": {
               "en": "mode"
             },
-            "example": "off"
+            "example": {
+              "en": "off"
+            }
           }
         ],
         "args": [
